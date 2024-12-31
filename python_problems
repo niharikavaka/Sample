@@ -1,0 +1,71 @@
+# right triangle star pattern
+n=5 
+for i in range(1,n+1):
+    print("*"*i)
+
+# Inverted Right Triangle Star Pattern   
+for i in range(n,0,-1):
+    print("*"*i)
+
+
+
+# Pyramid Pattern 
+
+# k=1
+# for i in range(0,n):
+#     print((n-k)*' '+ (i+k) * '*')
+#     k+=1   
+
+for i in range(1,n+1):
+    print((n-i)*" " +(2*i-1)* '*')  
+
+# Inverted Pyramid Pattern
+for i in range(n,0,-1):
+    print((n-i)*" " + (i*2-1)*"*")   
+
+#  Number Pyramid
+for i in range(1,n+1):
+   for j in range(n - i):
+        print(" ", end="")    
+   for j in range(1,i+1):
+       print(j,end="")
+       
+   print() 
+
+# Floyd’s Triangle  -> sequence of natural numbers in a triangle
+num =1
+for i in range(1,n+1):
+    for j in range(1,i+1):
+        print(num,end=" ")
+        num+=1 
+    print()    
+
+# Diamond Star Pattern    
+for i in range(1,n+1):
+    print((n-i)*" " +(2*i-1)* '*') 
+for i in range(n-1,0,-1):
+    print((n-i)*" "+(2*i - 1 )* '*')
+
+
+# Hollow Square Pattern
+for i in range(n):
+    for j in range(n):
+        if i == 0 or i == n-1 or j == 0 or j == n-1:
+            print('*', end=' ')
+        else:
+            print(' ', end=' ')
+    print()
+
+
+# Merge Two Dictionaries ->  ** unpacking operator to merge dictionaries.    
+dict1 = {'a': 1, 'b': 2}
+dict2 = {'b': 3, 'c': 4}
+
+merged_dict = {**dict1, **dict2}
+print(merged_dict)     
+
+# Invert a Dictionary (Swap Keys and Values) -> by using a dictionary comprehension
+my_dict = {'a': 1, 'b': 2, 'c': 3}
+inverted_dict={value:key for key,value in my_dict.items()}
+print(inverted_dict)
+              
