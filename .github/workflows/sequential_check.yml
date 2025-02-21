@@ -1,5 +1,5 @@
-name: Sequential Execution Without Matrix
-#event to be triggered
+name: Sequential Execution
+#event to trigger
 on: [push]
 
 jobs:
