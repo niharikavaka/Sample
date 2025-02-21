@@ -1,6 +1,6 @@
 name: parallel with matrix
-#event to be triggered
-on: [pull_request]
+#event to be triggered certain
+on: [push]
 
 jobs:
   build_number:
