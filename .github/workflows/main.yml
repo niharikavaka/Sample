@@ -1,6 +1,6 @@
 name: My First Github Actions 
 #event to be trigger
-on: [push]
+on: [pull]
 
 jobs:
   build_number:
