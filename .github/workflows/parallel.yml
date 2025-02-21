@@ -1,5 +1,5 @@
 name: parallel with matrix
-#event to be trigger
+#event to be triggered
 on: [pull_request]
 
 jobs:
