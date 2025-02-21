@@ -1,5 +1,5 @@
 name: My First Github Actions 
-#event
+#event to trigger
 on: workflow_dispatch
 
 jobs:
