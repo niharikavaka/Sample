@@ -1,6 +1,6 @@
 name: My First Github Actions 
 
-on: [push]
+on: [workflow-dispatch]
 
 jobs:
   build:
