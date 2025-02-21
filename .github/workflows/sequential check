@@ -1,6 +1,6 @@
 name: Sequential Execution Without Matrix
 
-on: [worlflow_dispatch]
+on: [push]
 
 jobs:
   build:
