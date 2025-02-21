@@ -1,6 +1,6 @@
-name: My First Github Actions 
+name: parallel with matrix
 #event to be trigger
-on: [pull]
+on: [pull_request]
 
 jobs:
   build_number:
