@@ -1,9 +1,9 @@
 name: My First Github Actions 
 #event to be trigger
-on: workflow_dispatch
+on: [push]
 
 jobs:
-  build:
+  build_number:
     runs-on: ubuntu-latest
 
     strategy:
