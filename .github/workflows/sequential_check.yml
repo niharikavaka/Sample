@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    Outputs:
+    outputs:
       test_report_path: ${{ steps.upload_test_report.outputs.artifact_path }}
     steps:
       - uses: actions/checkout@v4
