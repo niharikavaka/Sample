@@ -20,7 +20,7 @@ jobs:
           cd src
           python -m pytest -v sample.py --junitxml=test_results5/test_report.xml  # Save test results in XML
       - name: Upload test results as artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with: 
           name: test_results5
           path: src/test_results5/test_report.xml
