@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      test_report_path: ${{ steps.upload_test_report.outputs.artifact_path }}
+      test_report_name: test_results8
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python 3.8
@@ -22,13 +22,11 @@ jobs:
           cd src
           python -m pytest sample.py --junitxml=test_results8/test_report.xml  # Save test results in XML
       - name: Upload test results as artifacts
-        id: upload_test_report
         uses: actions/upload-artifact@v4
         with: 
           name: test_results8
           path: src/test_results8/test_report.xml
-        outputs:
-          artifacts_path: ${{ steps.upload_test_report.outputs.artifact_path }}   
+        
   deploy:
     runs-on: ubuntu-latest
     needs: build  # This ensures deploy runs after build
@@ -42,4 +40,4 @@ jobs:
       - name: Deploy
         run: |
           echo "Deployment completed"
-          echo "Test report can be found at: ${{ needs.build.outputs.test_report_path }}"
+          echo "Test report can be found at: ${{ needs.build.outputs.test_report_name }}/test_report.xml"
