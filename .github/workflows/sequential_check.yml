@@ -1,5 +1,5 @@
 name: Sequential Execution
-#event to trigger
+#event to trigger on 
 on: [push]
 
 jobs:
