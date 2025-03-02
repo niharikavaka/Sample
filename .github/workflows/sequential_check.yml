@@ -20,7 +20,7 @@ jobs:
           cd src
           python -m pytest sample.py --junitxml=test_results6/test_report.xml  # Save test results in XML
       - name: Upload test results as artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with: 
           name: test_results5
           path: src/test_results6/test_report.xml
@@ -29,7 +29,7 @@ jobs:
     needs: build  # This ensures deploy runs after build
     steps:
       - name: get build artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: test_results6
       - name: Output contents
