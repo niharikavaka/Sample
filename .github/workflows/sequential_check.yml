@@ -19,11 +19,11 @@ jobs:
         run: |
           cd src
           python -m pytest sample.py
-      - name: Upload artifacts
+      - name: Upload test results as artifacts
         uses: actions/upload-artifact@v4
         with: 
-          name: dist-files
-          path: dist
+          name: test_results
+          path: src/test_results
   deploy:
     runs-on: ubuntu-latest
     needs: build  # This ensures deploy runs after build
