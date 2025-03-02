@@ -18,12 +18,12 @@ jobs:
       - name: Run tests
         run: |
           cd src
-          python -m pytest -v sample.py --junitxml=test_results5/test_report.xml  # Save test results in XML
+          python -m pytest -v sample.py --junitxml=test_results6/test_report.xml  # Save test results in XML
       - name: Upload test results as artifacts
         uses: actions/upload-artifact@v3
         with: 
           name: test_results5
-          path: src/test_results5/test_report.xml
+          path: src/test_results6/test_report.xml
   deploy:
     runs-on: ubuntu-latest
     needs: build  # This ensures deploy runs after build
@@ -31,7 +31,7 @@ jobs:
       - name: get build artifacts
         uses: actions/download-artifact@v2
         with:
-          name: test_results5
+          name: test_results6
       - name: Output contents
         run: ls
       - name: Deploy
