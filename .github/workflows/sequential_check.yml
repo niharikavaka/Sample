@@ -40,4 +40,4 @@ jobs:
       - name: Deploy
         run: |
           echo "Deployment completed"
-          echo "Test report can be found at: ${{ needs.build.outputs.test_report_name }}/test_report.xml"
+        
