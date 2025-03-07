@@ -18,7 +18,7 @@ jobs:
       - name: Use global environment variable and secrets
         run: |
              echo "Global environment variable:$GLOBAL_ENV_VAR"    
-             echo "Using secret API_KEY: ${{ secrets.API_KEY }}" 
+             echo "Using secret KEY: ${{ secrets.KEY }}" 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
