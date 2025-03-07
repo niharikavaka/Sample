@@ -46,4 +46,12 @@ jobs:
       - name: Deploy
         run: |
           echo "Deployment completed"
+  success_notification:
+    runs-on: ubuntu-latest
+    needs: build  
+    if: success()  # This ensures success_notification job runs only if the build job is successful
+    steps:
+      - name: Send success notification
+        run: |
+          echo "Build succeeded. Notifying the team"         
         
