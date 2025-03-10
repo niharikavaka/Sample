@@ -5,7 +5,7 @@ on:
     branches:
       - branch-123   # This will trigger on pushes to "my-branch-name"
   schedule:
-    - cron: '*/2 * * * *'     
+    - cron: '*/5 * * * *'     
 jobs:
   build:
     runs-on: ubuntu-latest
