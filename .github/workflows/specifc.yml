@@ -1,9 +1,7 @@
 name: CI Workflow
 
-on:
-  push:
-    branches:
-      - branch-123   # This will trigger on pushes to "my-branch-name"
+on: [pull_request]
+ 
   schedule:
     - cron: '*/5 * * * *'     
 jobs:
