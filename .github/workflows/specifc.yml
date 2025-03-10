@@ -2,8 +2,7 @@ name: CI Workflow
 
 on: [pull_request]
  
-  schedule:
-    - cron: '*/5 * * * *'     
+  
 jobs:
   build:
     runs-on: ubuntu-latest
