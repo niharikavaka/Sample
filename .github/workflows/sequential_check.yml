@@ -1,6 +1,6 @@
 name: Sequential Execution
 #event to trigger on specific
-on: [push]
+on: [pull_request]
 env:
   GLOBAL_ENV_VAR: "This is a global environment variable"
 
