@@ -25,16 +25,14 @@ jobs:
         python -m playwright install  # Install Playwright browsers
         pip install allure-pytest  # Install allure-pytest for Allure integration
 
+    - name: Install Allure CLI
+      run: |
+        wget -qO- https://github.com/allure-framework/allure2/releases/download/2.19.0/allure-2.19.0.tgz | tar xzv
+        sudo mv allure-2.19.0/bin/allure /usr/local/bin/allure  # Move allure binary to the PATH
+
     - name: Run tests
       run: pytest --alluredir=allure-results test_elements.py  # Generate Allure results
-
-    # - name: Upload Allure results as artifacts
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: allure-results
-    #     path: allure-results  # Upload Allure results for later inspection
 
     - name: Generate Allure report
       run: |
         allure serve allure-results  # This will generate and serve the Allure report locally (you can use this for local inspection)
-        # Alternatively, you can configure Allure to generate a static report for web-based viewing if needed
