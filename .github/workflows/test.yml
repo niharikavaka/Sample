@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main  # Runs when you push to the main branch
-  # pull_request:
-  #   branches:
-  #     - main  # Runs on pull requests to the main branch
 
 jobs:
   test:
@@ -26,6 +23,18 @@ jobs:
         python -m pip install --upgrade pip  # Upgrade pip
         pip install -r requirements.txt  # Install dependencies from requirements.txt
         python -m playwright install  # Install Playwright browsers
+        pip install allure-pytest  # Install allure-pytest for Allure integration
 
     - name: Run tests
-      run: pytest test_elements.py  # Run the test using pytest
+      run: pytest --alluredir=allure-results test_elements.py  # Generate Allure results
+
+    - name: Upload Allure results as artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: allure-results
+        path: allure-results  # Upload Allure results for later inspection
+
+    - name: Generate Allure report
+      run: |
+        allure serve allure-results  # This will generate and serve the Allure report locally (you can use this for local inspection)
+        # Alternatively, you can configure Allure to generate a static report for web-based viewing if needed
