@@ -25,15 +25,17 @@ jobs:
         python -m playwright install  # Install Playwright browsers
         pip install allure-pytest  # Install allure-pytest for Allure integration
 
-    - name: Create allure results directory
-      run: |
-        mkdir -p allure_results      
+    # - name: Create allure results directory
+    #   run: |
+    #     mkdir -p allure_results      
       
 
     - name: Run tests
       run: |
         pytest test_elements.py  --alluredir=allure_results # Generate Allure results
 
-    # - name: Generate Allure report
-    #   run: |
-    #     allure serve allure-results  # This will generate and serve the Allure report locally (you can use this for local inspection)
+    - name: Generate Allure report
+      run: |
+        pip install allure-commandline  # Ensure allure-commandline is installed
+        allure generate allure_results --clean -o allure-report  # Generate Allure report
+        allure open allure-report  # Open the Allure report (not usable on CI server)
