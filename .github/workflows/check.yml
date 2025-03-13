@@ -1,20 +1,20 @@
-# name: CI Workflow # CI
+name: CI Workflow # CI
 
-# on: 
-#   push:
-#     branches:
-#       - branch-123   # This will trigger on pushes to "my-branch-name"
-#   schedule:
-#     - cron: '*/5 * * * *'     
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-#       - name: Run tests
-#         run: |
-#           echo "Running tests on branch-123"
+on: 
+  pull_request:
+    branches:
+      - main   
+  schedule:
+    - cron: '*/5 * * * *'     
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Run tests
+        run: |
+          echo "Running tests on branch-123"
 
 
 
