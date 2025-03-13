@@ -25,14 +25,14 @@ jobs:
         python -m playwright install  # Install Playwright browsers
         pip install allure-pytest  # Install allure-pytest for Allure integration
 
-    # - name: Create allure results directory
-    #   run: |
-    #     mkdir -p allure_results      
+    - name: Create allure results directory
+      run: |
+        mkdir -p allure_results      
       
 
     - name: Run tests
       run: |
-        pytest test_elements.py  --alluredir= src # Generate Allure results
+        pytest test_elements.py  --alluredir=allure_results # Generate Allure results
 
     # - name: Generate Allure report
     #   run: |
