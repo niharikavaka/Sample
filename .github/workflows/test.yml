@@ -28,8 +28,6 @@ jobs:
 
     - name: Run tests
       run: |
-        cd src 
-        mkdir allure_results
         pytest test_elements.py  --alluredir=allure_results # Generate Allure results
 
     # - name: Generate Allure report
