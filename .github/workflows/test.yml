@@ -32,11 +32,11 @@ jobs:
     - name: List Allure Results Directory
       run: ls -la allure_results3
 
-    - name: Upload Allure results as artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: allure-results 
-        path: /*result.json
+    # - name: Upload Allure results as artifacts
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: allure-results 
+    #     path: allure_results3
 
     # - name: Generate Allure report
     #   run: |
