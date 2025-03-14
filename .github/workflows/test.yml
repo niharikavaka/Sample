@@ -27,7 +27,7 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest test_elements.py --alluredir=allure_results5
+        pytest test_elements.py --alluredir=allure_results6
 
     - name: List Allure Results Directory
       run: ls -la allure_results6
