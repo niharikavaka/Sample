@@ -38,10 +38,10 @@ jobs:
         name: allure-results 
         path: allure_results5
 
-    # - name: Generate Allure report
-    #   run: |
-    #     pip install allure-commandline  
-    #     allure generate allure_results1 --clean -o allure-report  # Generate Allure report
+    - name: Generate Allure report
+      run: |
+        pip install allure-commandline  
+        allure generate allure_results1 --clean -o allure-report  # Generate Allure report
 
     # - name: Deploy Allure report to GitHub Pages
     #   uses: peaceiris/actions-gh-pages@v3
