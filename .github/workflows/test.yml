@@ -3,7 +3,7 @@ name: Python Playwright Test
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   test:
@@ -38,10 +38,16 @@ jobs:
         name: allure-results 
         path: allure_results5
 
+    - name: Install Allure commandline (Latest Version)
+      run: |
+        LATEST_ALLURE_VERSION=$(curl -s https://api.github.com/repos/allure-framework/allure2/releases/latest | jq -r .tag_name)
+        wget -qO- https://github.com/allure-framework/allure2/releases/download/$LATEST_ALLURE_VERSION/allure-$LATEST_ALLURE_VERSION.tgz | tar xvz -C /tmp
+        sudo ln -s /tmp/allure-$LATEST_ALLURE_VERSION/bin/allure /usr/local/bin/allure
+
     - name: Generate Allure report
       run: |
-        pip install allure-commandline  
-        allure generate allure_results1 --clean -o allure-report  # Generate Allure report
+        allure generate allure_results5 --clean -o allure-report
+
 
     # - name: Deploy Allure report to GitHub Pages
     #   uses: peaceiris/actions-gh-pages@v3
