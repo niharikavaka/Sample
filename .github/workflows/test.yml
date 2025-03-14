@@ -30,13 +30,13 @@ jobs:
         pytest test_elements.py --alluredir=allure_results5
 
     - name: List Allure Results Directory
-      run: ls -la allure_results5
+      run: ls -la allure_results6
 
     - name: Upload Allure results as artifacts
       uses: actions/upload-artifact@v4
       with:
         name: allure-results 
-        path: allure_results5
+        path: allure_results6
 
     - name: Install Allure commandline (Latest Version)
       run: |
@@ -46,7 +46,7 @@ jobs:
 
     - name: Generate Allure report
       run: |
-        allure generate allure_results5 --clean -o allure-report
+        allure generate allure_results6 --clean -o allure-report
 
 
     - name: Deploy Allure report to GitHub Pages
