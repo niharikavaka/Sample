@@ -30,22 +30,23 @@ jobs:
         pytest test_elements.py --alluredir=allure_results 
 
     - name: List Allure Results Directory
-      run:  ls -la allure_results       
+      run: ls -la allure_results
 
-    # - name: Upload Allure results as artifacts
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: allure-results 
-    #     path: allure_results  
+    - name: Upload Allure results as artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: allure-results 
+        path: allure_results  
 
-    # - name: Generate Allure report
-    #   run: |
-    #     pip install allure-commandline  # Ensure allure-commandline is installed
-    #     allure generate allure_results --clean -o allure-report  # Generate Allure report
+    - name: Generate Allure report
+      run: |
+        pip install allure-commandline  # Ensure allure-commandline is installed
+        allure generate allure_results --clean -o allure-report  # Generate Allure report
 
     - name: Deploy Allure report to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        deploy_branch: gh-pages         
-        folder: allure-report            
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages       # Valid input name
+        publish_dir: allure-report     # Valid input name
+        allow_empty_commit: true       # Optional, allows empty commit to deploy if there are no changes
