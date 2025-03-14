@@ -45,7 +45,7 @@ jobs:
 
     # - name: Deploy Allure report to GitHub Pages
     #   uses: peaceiris/actions-gh-pages@v3
-      with:
-        deploy_branch: gh-pages         # This specifies the branch to push the report to (typically 'gh-pages' for GitHub Pages)
-        folder: allure-report            # The folder that contains your Allure report
-        github_token: ${{ secrets.GITHUB_TOKEN }}  # Automatically provided GitHub token to authenticate the push.
+      # with:
+      #   deploy_branch: gh-pages         # This specifies the branch to push the report to (typically 'gh-pages' for GitHub Pages)
+      #   folder: allure-report            # The folder that contains your Allure report
+      #   github_token: ${{ secrets.GITHUB_TOKEN }}  # Automatically provided GitHub token to authenticate the push.
