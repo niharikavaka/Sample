@@ -27,10 +27,10 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest test_elements.py --alluredir=allure_results2
+        pytest test_elements.py --alluredir=allure_results4
 
     - name: List Allure Results Directory
-      run: ls -la allure_results2
+      run: ls -la allure_results4
 
     # - name: Upload Allure results as artifacts
     #   uses: actions/upload-artifact@v3
