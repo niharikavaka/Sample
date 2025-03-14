@@ -30,13 +30,13 @@ jobs:
         pytest test_elements.py --alluredir=allure_results2
 
     - name: List Allure Results Directory
-      run: ls -la allure_results2
+      run: ls -la allure_results3
 
-    # - name: Upload Allure results as artifacts
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: allure-results 
-    #     path: allure_results2  
+    - name: Upload Allure results as artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: allure-results 
+        path: /*result.json
 
     # - name: Generate Allure report
     #   run: |
