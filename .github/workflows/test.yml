@@ -33,7 +33,7 @@ jobs:
       run:  ls -la allure_results       
 
     - name: Upload Allure results as artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: allure-results 
         path: allure_results  
