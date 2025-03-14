@@ -32,21 +32,21 @@ jobs:
     - name: List Allure Results Directory
       run: ls -la allure_results
 
-    # - name: Upload Allure results as artifacts
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: allure-results 
-    #     path: allure_results  
+    - name: Upload Allure results as artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: allure-results 
+        path: allure_results  
 
     - name: Generate Allure report
       run: |
-        pip install allure-commandline  # Ensure allure-commandline is installed
+        pip install allure-commandline  
         allure generate allure_results --clean -o allure-report  # Generate Allure report
 
     - name: Deploy Allure report to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_branch: gh-pages       # Valid input name
-        publish_dir: allure-report     # Valid input name
-        allow_empty_commit: true       # Optional, allows empty commit to deploy if there are no changes
+        publish_branch: gh-pages     
+        publish_dir: allure-report     
+        allow_empty_commit: true       
