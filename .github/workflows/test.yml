@@ -35,8 +35,8 @@ jobs:
     - name: Upload Allure results as artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: allure-results  # Name of the artifact
-        path: allure_results  # Path to the Allure results directory
+        name: allure-results 
+        path: allure_results  
 
     - name: Generate Allure report
       run: |
@@ -46,6 +46,6 @@ jobs:
     - name: Deploy Allure report to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        deploy_branch: gh-pages         # This specifies the branch to push the report to (typically 'gh-pages' for GitHub Pages)
-        folder: allure-report            # The folder that contains your Allure report
-        github_token: ${{ secrets.GITHUB_TOKEN }}  # Automatically provided GitHub token to authenticate the push.
+        deploy_branch: gh-pages         
+        folder: allure-report            
+        github_token: ${{ secrets.GITHUB_TOKEN }}
