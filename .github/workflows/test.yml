@@ -36,7 +36,7 @@ jobs:
     #   uses: actions/upload-artifact@v3
     #   with:
     #     name: allure-results 
-    #     path: allure_results3
+    #     path: allure_results2
 
     # - name: Generate Allure report
     #   run: |
