@@ -55,4 +55,7 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: gh-pages     
         publish_dir: allure-report     
-        allow_empty_commit: true       #hvanad
+        allow_empty_commit: true       
+    - name: Output Allure Report URL
+      run: |
+        echo "Allure Report is available at: https://${{ github.repository_owner }}.github.io/${{ github.repository }}/index.html"
