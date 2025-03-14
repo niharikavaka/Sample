@@ -55,4 +55,4 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: gh-pages     
         publish_dir: allure-report     
-        allow_empty_commit: true       
+        allow_empty_commit: true       #hva
