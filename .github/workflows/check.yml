@@ -1,21 +1,33 @@
-name: CI Workflow # CI
-
-on: 
-  pull_request:
-    branches:
-      - main   
-  schedule:
-    - cron: '*/5 * * * *'     
 jobs:
-  build:
+  setup:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Run tests
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: "pip"
+
+      - name: Install Dependencies
         run: |
-          echo "Running tests on branch-123"
+          python -m venv venv
+          . venv/bin/activate
+          pip install --upgrade pip
+          pip install requests testrail google-api-python-client
 
+      - name: Install System Dependencies
+        run: sudo apt-get update && sudo apt-get install -y zip
 
+      - name: Set Environment Variables
+        run: |
+          echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+          echo "TESTRAIL_HOST=${{ secrets.TESTRAIL_HOST }}" >> $GITHUB_ENV
+          echo "TESTRAIL_USERNAME=${{ secrets.TESTRAIL_USERNAME }}" >> $GITHUB_ENV
+          echo "TESTRAIL_PASSWORD=${{ secrets.TESTRAIL_PASSWORD }}" >> $GITHUB_ENV
 
-  
+      - name: Run Python Script
+        run: |
+          . venv/bin/activate
+          python setup_CAFE-metrics.py
