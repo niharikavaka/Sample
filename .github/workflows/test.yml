@@ -1,10 +1,7 @@
 name: Python Playwright Test
 
-on:
-  push:
-    branches:
-      - main
-
+on:[pull_request]
+ 
 jobs:
   test:
     runs-on: ubuntu-latest  
