@@ -1,1 +1,24 @@
+name: Python Playwright Test with Docker
 
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest  
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2  
+
+    - name: Set up Docker
+      run: |
+        docker build -t python-playwright-test .  # Build the Docker image
+        
+    - name: Run tests inside Docker container
+      run: |
+        docker run --rm python-playwright-test
+
+  
