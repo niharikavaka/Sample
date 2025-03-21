@@ -9,6 +9,9 @@ RUN apt-get update && apt-get install -y \
     curl \
     unzip \
     libgtk-3-0 libdbus-1-3 libgbm-dev \
+    libnss3 \
+    libnspr4 \
+    libasound2 \
     && apt-get clean
 
 # Copy the requirements file to the container
@@ -25,4 +28,3 @@ COPY . .
 
 # Set the default command to run the tests
 CMD ["pytest", "test_elements.py"]
-
