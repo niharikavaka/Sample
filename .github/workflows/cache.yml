@@ -9,8 +9,7 @@ jobs:
       # ✅ Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          ref: cafe_metrics
+  
 
       # ✅ Set up Python
       - name: Set up Python
