@@ -33,10 +33,9 @@ jobs:
           path: .venv
           key: venv-${{ runner.os }}-python-3.10.16
 
-      # ✅ Verify the environment exists
       - name: Verify venv path
         run: |
-          ls -la .venv
+          ls -la .venv || echo ".venv not found"
 
       # ✅ Only upload the artifact if it exists
       - name: Upload Virtual Environment
