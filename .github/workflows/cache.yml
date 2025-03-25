@@ -8,14 +8,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+    
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10.16'
 
-      # ✅ Cache Python Virtual Environment
       - name: Cache Python Virtual Environment
         id: cache-venv
         uses: actions/cache@v3
@@ -23,7 +22,6 @@ jobs:
           path: .venv
           key: venv-${{ runner.os }}-python-3.10.16
 
-      # ✅ Save Cache (First Run)
       - name: Save Cache (First Run)
         if: steps.cache-venv.outputs.cache-hit != 'true'
         uses: actions/cache/save@v3
@@ -31,56 +29,50 @@ jobs:
           path: .venv
           key: venv-${{ runner.os }}-python-3.10.16     
 
-      # ✅ Install Dependencies
       - name: Install Dependencies
         if: steps.cache-venv.outputs.cache-hit != 'true'
         shell: bash
         run: |
-          pwd
-          ls -la
           sudo apt-get update
           sudo apt-get install -y zip tar
-          
-          # Create virtual environment
           python -m venv .venv
           source .venv/bin/activate
-          
-          # Install dependencies
           pip install --upgrade pip
           pip install requests testrail google-api-python-client
 
-      # ✅ Archive the venv directory into a .tar.gz file
-      - name: Archive venv
+      # ✅ Archive both the venv and the repository into a single tarball
+      - name: Archive venv and repo
         run: |
-          tar -czf python-venv.tar.gz .venv
+          tar -czf repo-and-venv.tar.gz .venv .
 
-      # ✅ Upload the archive as an artifact
-      - name: Upload Virtual Environment Archive
+      - name: Upload Repository and Virtual Environment
         uses: actions/upload-artifact@v4
         with:
-          name: python-venv-tar
-          path: python-venv.tar.gz
-          if-no-files-found: error
+          name: repo-and-venv
+          path: repo-and-venv.tar.gz
+
   Clone_Repository:
     needs: Setup_Environment
     runs-on: ubuntu-latest
     steps:
-    
-      # ✅ Download the archived venv
-      - name: Download Virtual Environment Archive
+      # ✅ Download the combined archive
+      - name: Download Repository + venv
         uses: actions/download-artifact@v4
         with:
-          name: python-venv-tar
+          name: repo-and-venv
           path: .
 
-      # ✅ Extract the venv
-      - name: Extract venv
+      # ✅ Extract the combined archive
+      - name: Extract Repository + venv
         run: |
-          tar -xzf python-venv.tar.gz
+          tar -xzf repo-and-venv.tar.gz
           ls -la .venv
+          ls -la
 
-      # ✅ Use the venv in the subsequent steps
+      # ✅ Use the virtual environment and run the script
       - name: Use Virtual Environment
         run: |
           source .venv/bin/activate
-          python --version
+          ls -la
+          cd allure_results || { echo "Folder not found"; exit 1; }
+          
