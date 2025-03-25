@@ -1,3 +1,6 @@
+name: cafe_metrics
+
+on: workflow_dispatch
 jobs:
   Setup_Environment:
     runs-on: ubuntu-latest
