@@ -9,7 +9,7 @@ jobs:
       # ✅ Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
-  
+        
 
       # ✅ Set up Python
       - name: Set up Python
@@ -17,22 +17,21 @@ jobs:
         with:
           python-version: '3.10.16'
 
-      # ✅ Install dependencies and create the virtual environment FIRST
+      # ✅ Install dependencies and create the virtual environment
       - name: Install Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y zip
+          sudo apt-get install -y zip tar
 
-          # Create the virtual environment
+          # Create and activate the virtual environment
           python -m venv .venv
-
-          # Verify that .venv was created
+          
+          # Validate environment creation
           if [ ! -d ".venv" ]; then
             echo "Failed to create .venv"
             exit 1
           fi
-
-          # Activate and install dependencies
+          
           source .venv/bin/activate
           pip install --upgrade pip
           pip install requests testrail google-api-python-client
@@ -52,18 +51,15 @@ jobs:
           restore-keys: |
             venv-${{ runner.os }}-python-3.10
 
-      # ✅ Ensure .venv exists before uploading (to avoid failures)
-      - name: Verify venv before upload
+      # ✅ Archive the venv directory into a .tar file
+      - name: Archive venv
         run: |
-          if [ ! -d ".venv" ]; then
-            echo "No .venv directory found. Skipping upload."
-            exit 0
-          fi
+          tar -czf python-venv.tar.gz .venv
 
-      # ✅ Upload the virtual environment if it exists
-      - name: Upload Virtual Environment
+      # ✅ Upload the archive as an artifact
+      - name: Upload Virtual Environment Archive
         uses: actions/upload-artifact@v4
         with:
-          name: python-venv
-          path: ${{ github.workspace }}/.venv
-          if-no-files-found: ignore
+          name: python-venv-tar
+          path: python-venv.tar.gz
+          if-no-files-found: error
