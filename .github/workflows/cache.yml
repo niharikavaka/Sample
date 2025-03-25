@@ -9,7 +9,9 @@ jobs:
       # ✅ Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+        with:
+          ref: cafe_metrics
+
       # ✅ Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -22,15 +24,16 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y zip
 
-          # Create and activate the virtual environment
+          # Create the virtual environment
           python -m venv .venv
-          
-          # Verify the environment was created successfully
+
+          # Verify that .venv was created
           if [ ! -d ".venv" ]; then
             echo "Failed to create .venv"
             exit 1
           fi
 
+          # Activate and install dependencies
           source .venv/bin/activate
           pip install --upgrade pip
           pip install requests testrail google-api-python-client
@@ -40,7 +43,7 @@ jobs:
         run: |
           ls -la .venv || echo ".venv not found"
 
-      # ✅ Cache the virtual environment AFTER creation
+      # ✅ Cache the virtual environment AFTER creating it
       - name: Cache Python Virtual Environment
         id: cache-venv
         uses: actions/cache@v3
@@ -50,7 +53,7 @@ jobs:
           restore-keys: |
             venv-${{ runner.os }}-python-3.10
 
-      # ✅ Ensure .venv exists before uploading
+      # ✅ Ensure .venv exists before uploading (to avoid failures)
       - name: Verify venv before upload
         run: |
           if [ ! -d ".venv" ]; then
@@ -58,7 +61,7 @@ jobs:
             exit 0
           fi
 
-      # ✅ Upload the virtual environment (using absolute path)
+      # ✅ Upload the virtual environment if it exists
       - name: Upload Virtual Environment
         uses: actions/upload-artifact@v4
         with:
