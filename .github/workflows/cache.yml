@@ -6,26 +6,43 @@ jobs:
   Setup_Environment:
     runs-on: ubuntu-latest
     steps:
+      # ✅ Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+        with:
+          ref: main  # Change to your branch name
 
+      # ✅ Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10.16'
 
-      # ✅ Create the virtual environment before cachinggg
+      # ✅ Install dependencies and create the virtual environment
       - name: Install Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y zip
+
+          # Create and activate the virtual environment
           python -m venv .venv
+          
+          # Validate environment creation
+          if [ ! -d ".venv" ]; then
+            echo "Failed to create .venv"
+            exit 1
+          fi
+          
           source .venv/bin/activate
           pip install --upgrade pip
           pip install requests testrail google-api-python-client
 
-      # ✅ Cache after creating the environment
+      # ✅ Verify the virtual environment path
+      - name: Verify venv path
+        run: |
+          ls -la .venv || echo ".venv not found"
+
+      # ✅ Cache the virtual environment
       - name: Cache Python Virtual Environment
         id: cache-venv
         uses: actions/cache@v3
@@ -33,14 +50,10 @@ jobs:
           path: .venv
           key: venv-${{ runner.os }}-python-3.10.16
 
-      - name: Verify venv path
-        run: |
-          ls -la .venv || echo ".venv not found"
-
-      # ✅ Only upload the artifact if it exists
+      # ✅ Upload Virtual Environment with Absolute Path
       - name: Upload Virtual Environment
-        if: hashFiles('.venv/**') != ''
         uses: actions/upload-artifact@v4
         with:
           name: python-venv
-          path: .venv
+          path: ${{ github.workspace }}/.venv
+          if-no-files-found: ignore
