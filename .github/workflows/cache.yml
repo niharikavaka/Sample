@@ -61,3 +61,29 @@ jobs:
           name: python-venv-tar
           path: python-venv.tar.gz
           if-no-files-found: error
+  Clone_Repository:
+    needs: Setup_Environment
+    runs-on: ubuntu-latest
+    steps:
+      # ✅ Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ✅ Download the archived venv
+      - name: Download Virtual Environment Archive
+        uses: actions/download-artifact@v4
+        with:
+          name: python-venv-tar
+          path: .
+
+      # ✅ Extract the venv
+      - name: Extract venv
+        run: |
+          tar -xzf python-venv.tar.gz
+          ls -la .venv
+
+      # ✅ Use the venv in the subsequent steps
+      - name: Use Virtual Environment
+        run: |
+          source .venv/bin/activate
+          python --version
