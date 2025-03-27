@@ -18,15 +18,15 @@ jobs:
         id: cache-venv
         uses: actions/cache@v3
         with:
-          path: .venv
-          key: venv-${{ runner.os }}-python-3.10.16
+          path: .venv1
+          key: venv1-${{ runner.os }}-python-3.10.16
 
       - name: Save Cache (First Run)
         if: steps.cache-venv.outputs.cache-hit != 'true'
         uses: actions/cache/save@v3
         with:
-          path: .venv
-          key: venv-${{ runner.os }}-python-3.10.16     
+          path: .venv1
+          key: venv1-${{ runner.os }}-python-3.10.16     
 
       - name: Install Dependencies
         if: steps.cache-venv.outputs.cache-hit != 'true'
@@ -34,7 +34,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y zip tar
-          python -m venv .venv
+          python -m venv .venv1
           source .venv/bin/activate
           pip install --upgrade pip
           pip install requests testrail google-api-python-client
@@ -42,8 +42,7 @@ jobs:
       # ✅ Archive both the venv and the repository into a single tarball (excluding the archive itself)
       - name: Archive venv and repo
         run: |
-          tar --exclude='./repo-and-venv.tar.gz' -czf repo-and-venv.tar.gz .venv .
-
+           tar -czf repo-and-venv.tar.gz .venv1 ./
       - name: Upload Repository and Virtual Environment
         uses: actions/upload-artifact@v4
         with:
