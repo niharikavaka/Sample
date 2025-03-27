@@ -1,6 +1,6 @@
 name: parallel with matrix
 #event to be triggered
-on: [pull_request]
+on: workflow_dispatch
 
 jobs:
   build_number:
