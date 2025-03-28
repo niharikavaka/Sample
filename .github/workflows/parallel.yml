@@ -1,4 +1,4 @@
-name: Upload and Download Repo + Venv2
+name: Upload and Download Repo + Venv3
 
 on: workflow_dispatch
 
@@ -18,8 +18,8 @@ jobs:
         id: cache-venv
         uses: actions/cache@v3
         with:
-          path: .venv4
-          key: venv2-${{ runner.os }}-python-3.10.16
+          path: .venv5
+          key: venv3-${{ runner.os }}-python-3.10.16
 
       - name: Install Dependencies
         if: steps.cache-venv.outputs.cache-hit != 'true'
@@ -27,8 +27,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y zip
-          python -m venv .venv4
-          source .venv4/bin/activate
+          python -m venv .venv5
+          source .venv5/bin/activate
           pip install --upgrade pip
           pip install requests testrail google-api-python-client
 
@@ -38,8 +38,8 @@ jobs:
         with:
           name: repo-and-venv
           path: |
-            .venv4
-            .  # Uploads the entire repo along with .venv4
+            .venv5
+            # Uploads the entire repo along with .venv4
 
   # ✅ Download Artifacts Step
   download:
@@ -50,10 +50,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: repo-and-venv
-          path: .
+          path: .venv5
 
       - name: Verify Contents
         run: |
           echo "Listing downloaded files..."
-          ls -la
-          ls -la .venv4
+          
+          ls -la .venv5
