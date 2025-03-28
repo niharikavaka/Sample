@@ -13,13 +13,13 @@ jobs:
         with:
           python-version: '3.10.16'
 
-      # ✅ Cache Python Virtual Environment (No Save Cache Step)
+      # ✅ Cache Python Virtual Environment
       - name: Cache Python Virtual Environment
         id: cache-venv
         uses: actions/cache@v3
         with:
-          path: .venv
-          key: venv-${{ runner.os }}-python-3.10.16
+          path: .venv2    # 🔥 Updated to .venv2
+          key: venv2-${{ runner.os }}-python-3.10.16
 
       # ✅ Install Dependencies if Cache Misses
       - name: Install Dependencies
@@ -28,24 +28,22 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y zip tar
-          python -m venv .venv
-          source .venv/bin/activate
+          python -m venv .venv2       # 🔥 Updated to .venv2
+          source .venv2/bin/activate
           pip install --upgrade pip
           pip install requests testrail google-api-python-client
 
-      # ✅ Archive venv into a .tar.gz file
-      - name: Archive venv
+      # ✅ Archive venv2 into a .tar.gz file
+      - name: Archive venv2
         run: |
-          tar --exclude='./venv.tar.gz' -czf venv.tar.gz .venv
+          tar --exclude='./venv2.tar.gz' -czf venv2.tar.gz .venv2
 
       # ✅ Upload the virtual environment as an artifact
       - name: Upload Virtual Environment
         uses: actions/upload-artifact@v4
         with:
-          name: venv
-          path: venv.tar.gz
-
----
+          name: venv2
+          path: venv2.tar.gz
 
   # ✅ Job 2: Download and Verify
   download:
@@ -56,18 +54,18 @@ jobs:
       - name: Download Virtual Environment
         uses: actions/download-artifact@v4
         with:
-          name: venv
+          name: venv2
           path: .
 
       # ✅ Extract the artifact
-      - name: Extract venv
+      - name: Extract venv2
         run: |
-          tar -xzf venv.tar.gz
+          tar -xzf venv2.tar.gz
 
       # ✅ Verify the virtual environment and list dependencies
       - name: Verify Installed Dependencies
         shell: bash
         run: |
-          source .venv/bin/activate    # Activate the venv
+          source .venv2/bin/activate    # 🔥 Updated to .venv2
           echo "✅ Listing Installed Dependencies:"
           pip list   # Display the installed dependencies
