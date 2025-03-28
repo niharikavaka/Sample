@@ -1,4 +1,4 @@
-name: Upload and Download Repo + Venv
+name: Upload and Download Repo + Venv1
 
 on: workflow_dispatch
 
