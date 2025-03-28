@@ -19,14 +19,14 @@ jobs:
         id: cache-venv
         uses: actions/cache@v3
         with:
-          path: .venv1
+          path: .venv2
           key: venv-${{ runner.os }}-python-3.10.16
 
       - name: Save Cache (First Run)
         if: steps.cache-venv.outputs.cache-hit != 'true'
         uses: actions/cache/save@v3
         with:
-          path: .venv1
+          path: .venv2
           key: venv-${{ runner.os }}-python-3.10.16
 
       - name: Install Dependencies
@@ -35,8 +35,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y zip
-          python -m venv .venv1
-          source .venv1/bin/activate
+          python -m venv .venv2
+          source .venv2/bin/activate
           pip install --upgrade pip
           pip install requests testrail google-api-python-client
 
@@ -46,7 +46,7 @@ jobs:
         with:
           name: repo-and-venv
           path: |
-            .venv
+            .venv2
             .  # Uploads the entire repo along with .venv
 
   # ✅ Download and verify in a new job
@@ -64,4 +64,4 @@ jobs:
         run: |
           echo "Listing downloaded files..."
           ls -la
-          ls -la .venv
+          ls -la .venv2
