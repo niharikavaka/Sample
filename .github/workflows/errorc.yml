@@ -20,7 +20,7 @@ jobs:
         id: cache-venv
         uses: actions/cache@v3
         with:
-          path: .venv5    # 🔥 Updated to .venv5
+          path: .venv5    # 🔥 Use .venv5
           key: venv10-${{ runner.os }}-python-3.10.16
 
       # ✅ Install Dependencies if Cache Misses
@@ -30,16 +30,24 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y zip
-          python -m venv .venv5    # 🔥 Updated to .venv5
+          python -m venv .venv5    # 🔥 Create .venv5
           source .venv5/bin/activate
           pip install --upgrade pip
           pip install requests testrail google-api-python-client
+
+      # ✅ Save Cache (First Run)
+      - name: Save Cache
+        if: steps.cache-venv.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v3
+        with:
+          path: .venv5               # ✅ Cache the .venv5 environment
+          key: venv10-${{ runner.os }}-python-3.10.16
 
       # ✅ Upload the virtual environment as an artifact
       - name: Upload Virtual Environment
         uses: actions/upload-artifact@v4
         with:
-          name: venv5-artifact       # 🔥 Updated artifact name
+          name: venv5-artifact       # 🔥 Artifact name
           path: .venv5               # 🔥 Upload the .venv5 folder
 
 
@@ -52,13 +60,13 @@ jobs:
       - name: Download Virtual Environment
         uses: actions/download-artifact@v4
         with:
-          name: venv5-artifact       # 🔥 Updated artifact name
+          name: venv5-artifact       # 🔥 Artifact name
           path: .                     # Extract it to the current directory
 
       # ✅ Verify the downloaded dependencies
       - name: Verify Installed Dependencies
         shell: bash
         run: |
-          source .venv5/bin/activate   # 🔥 Updated to .venv5
+          source .venv5/bin/activate   # 🔥 Activate the environment
           echo "✅ Listing Installed Dependencies:"
           pip list   # ✅ Display the installed dependencies
