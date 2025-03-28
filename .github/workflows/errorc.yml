@@ -18,8 +18,8 @@ jobs:
         id: cache-venv
         uses: actions/cache@v3
         with:
-          path: .venv2    # 🔥 Updated to .venv2
-          key: venv2-${{ runner.os }}-python-3.10.16
+          path: .venv40    # 🔥 Updated to .venv40
+          key: venv40-${{ runner.os }}-python-3.10.16
 
       # ✅ Install Dependencies if Cache Misses
       - name: Install Dependencies
@@ -28,22 +28,22 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y zip tar
-          python -m venv .venv2       # 🔥 Updated to .venv2
-          source .venv2/bin/activate
+          python -m venv .venv40       # 🔥 Updated to .venv40
+          source .venv40/bin/activate
           pip install --upgrade pip
           pip install requests testrail google-api-python-client
 
-      # ✅ Archive venv2 into a .tar.gz file
-      - name: Archive venv2
+      # ✅ Archive venv40 into a .tar.gz file
+      - name: Archive venv40
         run: |
-          tar --exclude='./venv2.tar.gz' -czf venv2.tar.gz .venv2
+          tar --exclude='./venv40.tar.gz' -czf venv40.tar.gz .venv40
 
       # ✅ Upload the virtual environment as an artifact
       - name: Upload Virtual Environment
         uses: actions/upload-artifact@v4
         with:
-          name: venv2
-          path: venv2.tar.gz
+          name: venv40
+          path: venv40.tar.gz
 
   # ✅ Job 2: Download and Verify
   download:
@@ -54,18 +54,18 @@ jobs:
       - name: Download Virtual Environment
         uses: actions/download-artifact@v4
         with:
-          name: venv2
+          name: venv40
           path: .
 
       # ✅ Extract the artifact
-      - name: Extract venv2
+      - name: Extract venv40
         run: |
-          tar -xzf venv2.tar.gz
+          tar -xzf venv40.tar.gz
 
       # ✅ Verify the virtual environment and list dependencies
       - name: Verify Installed Dependencies
         shell: bash
         run: |
-          source .venv2/bin/activate    # 🔥 Updated to .venv2
+          source .venv40/bin/activate    # 🔥 Updated to .venv40
           echo "✅ Listing Installed Dependencies:"
           pip list   # Display the installed dependencies
