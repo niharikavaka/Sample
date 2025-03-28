@@ -1,0 +1,64 @@
+name: Upload and Download Repo + Venv
+
+on: workflow_dispatch
+
+jobs:
+  # ✅ Upload Job: Install Dependencies & Upload Artifact
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10.16'
+
+      # ✅ Cache Python Virtual Environment
+      - name: Cache Python Virtual Environment
+        id: cache-venv
+        uses: actions/cache@v3
+        with:
+          path: .venv5    # 🔥 Updated to .venv5
+          key: venv10-${{ runner.os }}-python-3.10.16
+
+      # ✅ Install Dependencies if Cache Misses
+      - name: Install Dependencies
+        if: steps.cache-venv.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zip
+          python -m venv .venv5    # 🔥 Updated to .venv5
+          source .venv5/bin/activate
+          pip install --upgrade pip
+          pip install requests testrail google-api-python-client
+
+      # ✅ Upload the virtual environment as an artifact
+      - name: Upload Virtual Environment
+        uses: actions/upload-artifact@v4
+        with:
+          name: venv5-artifact       # 🔥 Updated artifact name
+          path: .venv5               # 🔥 Upload the .venv5 folder
+
+
+  # ✅ Download Job: Download Artifact & List Dependencies
+  download:
+    runs-on: ubuntu-latest
+    needs: upload
+    steps:
+      # ✅ Download the artifact
+      - name: Download Virtual Environment
+        uses: actions/download-artifact@v4
+        with:
+          name: venv5-artifact       # 🔥 Updated artifact name
+          path: .                     # Extract it to the current directory
+
+      # ✅ Verify the downloaded dependencies
+      - name: Verify Installed Dependencies
+        shell: bash
+        run: |
+          source .venv5/bin/activate   # 🔥 Updated to .venv5
+          echo "✅ Listing Installed Dependencies:"
+          pip list   # ✅ Display the installed dependencies
