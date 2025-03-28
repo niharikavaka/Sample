@@ -19,15 +19,15 @@ jobs:
         id: cache-venv
         uses: actions/cache@v3
         with:
-          path: .venv2
+          path: .venv3
           key: venv-${{ runner.os }}-python-3.10.16
 
-      - name: Save Cache (First Run)
-        if: steps.cache-venv.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v3
-        with:
-          path: .venv2
-          key: venv-${{ runner.os }}-python-3.10.16
+      # - name: Save Cache (First Run)
+      #   if: steps.cache-venv.outputs.cache-hit != 'true'
+      #   uses: actions/cache/save@v3
+      #   with:
+      #     path: .venv3
+      #     key: venv-${{ runner.os }}-python-3.10.16
 
       - name: Install Dependencies
         if: steps.cache-venv.outputs.cache-hit != 'true'
@@ -35,33 +35,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y zip
-          python -m venv .venv2
-          source .venv2/bin/activate
+          python -m venv .venv3
+          source .venv3/bin/activate
           pip install --upgrade pip
           pip install requests testrail google-api-python-client
 
-      # ✅ Upload repository and venv directly (no tar)
-      - name: Upload Repository and Virtual Environment
-        uses: actions/upload-artifact@v4
-        with:
-          name: repo-and-venv
-          path: |
-            .venv2
-            .  # Uploads the entire repo along with .venv
-
-  # ✅ Download and verify in a new job
-  download:
-    runs-on: ubuntu-latest
-    needs: upload
-    steps:
-      - name: Download Repository + venv
-        uses: actions/download-artifact@v4
-        with:
-          name: repo-and-venv
-          path: .
-
-      - name: Verify Contents
-        run: |
-          echo "Listing downloaded files..."
-          ls -la
-          ls -la .venv2
