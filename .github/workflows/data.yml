@@ -3,10 +3,17 @@ name: Cache + Upload and Download Python Virtual Environment123
 on: workflow_dispatch
 
 jobs:
-  # ✅ Job 1: Cache, Install, and Upload
-  upload:
+
+  Setup_Environment:
     runs-on: ubuntu-latest
+    outputs:
+      workspace_dir: ${{ github.workspace }}  # Share workspace path
+
     steps:
+      # ✅ Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       # ✅ Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -18,54 +25,44 @@ jobs:
         id: cache-venv
         uses: actions/cache@v3
         with:
-          path: .venv40    # 🔥 Updated to .venv40
-          key: venv40-${{ runner.os }}-python-3.10.16
+          path: .venv
+          key: venv-${{ runner.os }}-python-3.10.16
 
-      # ✅ Install Dependencies if Cache Misses
+      # ✅ Install Dependencies only if cache missed
       - name: Install Dependencies
         if: steps.cache-venv.outputs.cache-hit != 'true'
         shell: bash
         run: |
           sudo apt-get update
-          sudo apt-get install -y zip tar
-          python -m venv .venv40       # 🔥 Updated to .venv40
-          source .venv40/bin/activate
+          sudo apt-get install -y zip
+          python -m venv .venv
+          source .venv/bin/activate
           pip install --upgrade pip
           pip install requests testrail google-api-python-client
 
-      # ✅ Archive venv40 into a .tar.gz file
-      - name: Archive venv40
-        run: |
-          tar --exclude='./venv40.tar.gz' -czf venv40.tar.gz .venv40
+      # ✅ No need to upload artifacts, workspace will be reused
 
-      # ✅ Upload the virtual environment as an artifact
-      - name: Upload Virtual Environment
-        uses: actions/upload-artifact@v4
-        with:
-          name: venv40
-          path: venv40.tar.gz
-
-  # ✅ Job 2: Download and Verify
-  download:
+  # ✅ Use the same workspace without downloading artifacts
+  Use_Cached_Env:
     runs-on: ubuntu-latest
-    needs: upload
+    needs: Setup_Environment
+
     steps:
-      # ✅ Download the artifact
-      - name: Download Virtual Environment
-        uses: actions/download-artifact@v4
-        with:
-          name: venv40
-          path: .
-
-      # ✅ Extract the artifact
-      - name: Extract venv40
+      # ✅ Use the same workspace (no artifacts required)
+      - name: Reuse Cached Workspace
         run: |
-          tar -xzf venv40.tar.gz
+          echo "Using shared workspace: ${{ github.workspace }}"
 
-      # ✅ Verify the virtual environment and list dependencies
-      - name: Verify Installed Dependencies
+      # ✅ Set up Python again
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10.16'
+
+      # ✅ Activate the cached virtual environment
+      - name: Use Cached Virtual Environment
         shell: bash
         run: |
-          source .venv40/bin/activate    # 🔥 Updated to .venv40
-          echo "✅ Listing Installed Dependencies:"
-          pip list   # Display the installed dependencies
+          source .venv/bin/activate
+          python --version
+          pip list
