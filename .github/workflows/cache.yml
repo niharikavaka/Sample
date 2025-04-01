@@ -73,4 +73,7 @@ jobs:
       - name: List Downloaded Files
         run: |
           ls -la
-          source .venv/bin/activate
+          ls -la repo-and-venv  # Check the folder structure
+          ls -la repo-and-venv/.venv  # Verify if .venv exists
+
+          # source .venv/bin/activate
