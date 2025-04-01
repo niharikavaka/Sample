@@ -73,3 +73,4 @@ jobs:
       - name: List Downloaded Files
         run: |
           ls -la
+          source .venv/bin/activate
