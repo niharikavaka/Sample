@@ -48,7 +48,9 @@ jobs:
 
       - name: Zip Repository and Virtual Environment
         run: |
-          zip -r repo-and-venv.zip .venv ./
+           zip -r repo-and-venv.zip . -x 'repo-and-venv.zip'
+           ls -la  # Check contents
+           ls -la .venv  # Verify .venv is included
      
           
 
