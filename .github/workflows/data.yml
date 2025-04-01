@@ -1,26 +1,21 @@
-name: Cache + Upload and Download Python Virtual Environment123
+name: Upload and Download Repo + Venv
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
 
 jobs:
-
   Setup_Environment:
     runs-on: ubuntu-latest
-    outputs:
-      workspace_dir: ${{ github.workspace }}  # Share workspace path
 
     steps:
-      # ✅ Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ✅ Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10.16'
 
-      # ✅ Cache Python Virtual Environment
       - name: Cache Python Virtual Environment
         id: cache-venv
         uses: actions/cache@v3
@@ -28,7 +23,13 @@ jobs:
           path: .venv
           key: venv-${{ runner.os }}-python-3.10.16
 
-      # ✅ Install Dependencies only if cache missed
+      - name: Save Cache (First Run)
+        if: steps.cache-venv.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v3
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-python-3.10.16
+
       - name: Install Dependencies
         if: steps.cache-venv.outputs.cache-hit != 'true'
         shell: bash
@@ -39,30 +40,37 @@ jobs:
           source .venv/bin/activate
           pip install --upgrade pip
           pip install requests testrail google-api-python-client
+     
+      - name: List Files Before Upload
+        run: |
+          ls -la
+          ls -la .venv  
 
-      # ✅ No need to upload artifacts, workspace will be reused
+      - name: Zip Repository and Virtual Environment
+        run: |
+          zip -r repo-and-venv.zip .venv ./
+     
+          
 
-  # ✅ Use the same workspace without downloading artifacts
-  Use_Cached_Env:
+      - name: Upload Repository and Virtual Environment
+        uses: actions/upload-artifact@v4
+        with:
+          name: repo-and-venv
+          path: repo-and-venv.zip
+            
+
+  Download_Artifacts:
     runs-on: ubuntu-latest
-    needs: Setup_Environment
+    needs: Setup_Environment  # This ensures it runs after the first job
 
     steps:
-      # ✅ Use the same workspace (no artifacts required)
-      - name: Reuse Cached Workspace
-        run: |
-          echo "Using shared workspace: ${{ github.workspace }}"
-
-      # ✅ Set up Python again
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Download Repository and Virtual Environment
+        uses: actions/download-artifact@v4
         with:
-          python-version: '3.10.16'
-
-      # ✅ Activate the cached virtual environment
-      - name: Use Cached Virtual Environment
-        shell: bash
+          name: repo-and-venv
+      - name: Extract Artifact
         run: |
+          unzip repo-and-venv.zip
+          ls -la
+          ls -la .venv
           source .venv/bin/activate
-          python --version
-          pip list
