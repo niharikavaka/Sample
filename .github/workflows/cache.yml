@@ -64,6 +64,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: repo-and-venv
+      - name: Extract Artifacts (if zipped)
+        run: |
+          unzip repo-and-venv.zip
+          ls -la
+    
 
       - name: List Downloaded Files
         run: |
